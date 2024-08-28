@@ -15,7 +15,7 @@ WPac is a command-line tool that provides a zypper/pkg-like syntax for the Windo
    git clone https://github.com/Gur0v/wpac.git
    cd wpac
    ```
-2. Compile the C using the MinGW complier:
+2. Compile the C using MinGW:
    ```sh
    gcc -o wpac.exe wpac.c
    ```
