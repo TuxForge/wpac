@@ -109,4 +109,5 @@ This project is licensed under the GNU General Public License - see the [LICENSE
 ## Acknowledgments
 
 - This project is a wrapper around Microsoft's `winget` tool.
+- This utility **does not install winget for you,** cause I can't be *bothered* making an installer & it's *usually* preinstalled on newer Windows versions.
 - This project was initially made for personal use, I know that it is really simple.
