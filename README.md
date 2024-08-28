@@ -5,7 +5,6 @@ WPac is a command-line tool that provides a zypper/pkg-like syntax for the Windo
 ## Features
 
 - Shorthand and full syntax support for common `winget` commands
-- Easy-to-use interface for Windows package management
 - Supports all major `winget` operations
 
 ## Installation
