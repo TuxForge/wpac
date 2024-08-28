@@ -1,5 +1,5 @@
 param (
-    [string]$Action = $args[0]  # Default to the first argument if not provided
+    [string]$Action
 )
 
 function Test-Admin {
@@ -11,8 +11,6 @@ function Test-Admin {
 if (-Not (Test-Admin)) {
     Write-Host "This script must be run as an Administrator." -ForegroundColor Red
     Write-Host "Please right-click on PowerShell and select 'Run as Administrator'." -ForegroundColor Yellow
-    Write-Host "Press any key to exit..."
-    [void][System.Console]::ReadKey($true)
     exit
 }
 
