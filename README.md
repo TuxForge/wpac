@@ -1,6 +1,6 @@
 # WPac - Windows Package Manager Wrapper
 
-WPac is a command-line tool that provides a zypper/pkg-like syntax for the Windows Package Manager (winget). It simplifies software package management on Windows by offering both shorthand and full syntax options for winget commands, making it easier for users to install, uninstall, upgrade, search for, and manage software packages.
+WPac is a command-line tool that provides a zypper/pkg-like syntax for the Windows Package Manager (winget) written purely in C. It simplifies software package management on Windows by offering both shorthand and full syntax options for winget commands, making it easier for users to install, uninstall, upgrade, search for, and manage software packages.
 
 ## Features
 
