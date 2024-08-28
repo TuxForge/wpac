@@ -10,16 +10,40 @@ WPac is a command-line tool that provides a zypper/pkg-like syntax for the Windo
 
 ## Installation
 
+<details>
+<summary>With PowerShell (recommended)</summary>
+
+### Installation:
+
+```powershell
+iex "& { $(iwr -useb 'https://raw.githubusercontent.com/Gur0v/wpac/main/ins.ps1') }"
+```
+
+### Removal:
+
+```powershell
+iex "& { $(iwr -useb 'https://raw.githubusercontent.com/Gur0v/wpac/main/rem.ps1') }"
+```
+
+</details>
+
+<details>
+<summary>With MinGW (manual)</summary>
+
 1. Clone this repository:
    ```sh
    git clone https://github.com/Gur0v/wpac.git
    cd wpac
    ```
+
 2. Compile the C using MinGW:
    ```sh
    gcc -o wpac.exe wpac.c
    ```
+
 3. Add the directory containing the `wpac` executable to your system's PATH.
+
+</details>
 
 ## Usage
 
