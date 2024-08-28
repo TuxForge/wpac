@@ -7,6 +7,7 @@ function Test-Admin {
 if (-Not (Test-Admin)) {
     Write-Host "This script must be run as an Administrator." -ForegroundColor Red
     Write-Host "Please right-click on PowerShell and select 'Run as Administrator'." -ForegroundColor Yellow
+    Read-Host "Press Enter to exit..."
     exit
 }
 
