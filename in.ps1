@@ -1,3 +1,7 @@
+param (
+    [string]$Action
+)
+
 function Test-Admin {
     $identity = [System.Security.Principal.WindowsIdentity]::GetCurrent()
     $principal = New-Object System.Security.Principal.WindowsPrincipal($identity)
@@ -10,26 +14,56 @@ if (-Not (Test-Admin)) {
     exit
 }
 
-$localAppData = [System.Environment]::GetFolderPath('LocalApplicationData')
-$folderPath = Join-Path -Path $localAppData -ChildPath 'wpac'
+$folderPath = [System.IO.Path]::Combine([System.Environment]::GetFolderPath('LocalApplicationData'), 'wpac')
 $zipUrl = 'https://github.com/Gur0v/wpac/releases/download/v0.1/wpac.zip'
 $zipPath = Join-Path -Path $folderPath -ChildPath 'wpac.zip'
 
-if (-Not (Test-Path -Path $folderPath)) {
-    New-Item -ItemType Directory -Path $folderPath
+function Install-Wpac {
+    if (-Not (Test-Path -Path $folderPath)) {
+        New-Item -ItemType Directory -Path $folderPath
+    }
+
+    Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath
+    Expand-Archive -Path $zipPath -DestinationPath $folderPath
+    Remove-Item -Path $zipPath
+
+    $existingPath = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::Machine)
+    if (-Not ($existingPath -like "*$folderPath*")) {
+        $newPath = $existingPath + ";$folderPath"
+        [System.Environment]::SetEnvironmentVariable('Path', $newPath, [System.EnvironmentVariableTarget]::Machine)
+        Write-Host "Added $folderPath to the system PATH."
+    } else {
+        Write-Host "$folderPath is already in the system PATH."
+    }
+
+    Write-Host "Installation completed successfully."
 }
 
-Invoke-WebRequest -Uri $zipUrl -OutFile $zipPath
-Expand-Archive -Path $zipPath -DestinationPath $folderPath
-Remove-Item -Path $zipPath
+function Remove-Wpac {
+    $existingPath = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::Machine)
 
-$existingPath = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::Machine)
-if (-Not ($existingPath -like "*$folderPath*")) {
-    $newPath = $existingPath + ";$folderPath"
-    [System.Environment]::SetEnvironmentVariable('Path', $newPath, [System.EnvironmentVariableTarget]::Machine)
-    Write-Host "Added $folderPath to the system PATH."
+    if ($existingPath -like "*$folderPath*") {
+        $pathArray = $existingPath -split ';'
+        $newPathArray = $pathArray | Where-Object { $_ -ne $folderPath }
+        $newPath = [string]::Join(';', $newPathArray)
+        [System.Environment]::SetEnvironmentVariable('Path', $newPath, [System.EnvironmentVariableTarget]::Machine)
+        Write-Host "Removed $folderPath from the system PATH."
+
+        if (Test-Path -Path $folderPath) {
+            Remove-Item -Path $folderPath -Recurse -Force
+            Write-Host "Deleted the folder: $folderPath."
+        } else {
+            Write-Host "The folder $folderPath does not exist."
+        }
+    } else {
+        Write-Host "$folderPath is not in the system PATH."
+    }
+}
+
+if ($Action -eq '-install') {
+    Install-Wpac
+} elseif ($Action -eq '-remove') {
+    Remove-Wpac
 } else {
-    Write-Host "$folderPath is already in the system PATH."
+    Write-Host "Invalid action. Use '-install' to install or '-remove' to remove."
 }
-
-Write-Host "Script completed successfully."
