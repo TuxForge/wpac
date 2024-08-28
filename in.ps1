@@ -1,5 +1,5 @@
 param (
-    [string]$Action
+    [string]$Action = $args[0]
 )
 
 function Test-Admin {
